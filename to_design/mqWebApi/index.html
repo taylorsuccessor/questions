@@ -1,0 +1,486 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Sample MT4 WepApi Form</title>
+<link rel="stylesheet" type="text/css" href="view.css" media="all">
+    <script src="js/jquery-1.11.1.min.js"></script>
+
+    <script>
+      function changeTab(radio,tabId){
+          $('#ajaxDump').html('');
+
+          $('.tab').hide(200);
+          $('#'+tabId).show(200);
+          $('#tabsContainer label').removeClass('active');
+          radio.parent().addClass('active');
+
+          if(tabId=='createMt4Account'){
+              $('#loginInputsContainer').hide();
+          }else{
+              $('#loginInputsContainer').show();
+          }
+      }
+     
+function sendFormAjax(form){
+
+
+    $.ajax({
+        url: form.attr('action'),
+        data:form.serialize(),
+        type:form.attr('method').toUpperCase(),
+        success: function(result){
+        $('#ajaxDump').html(result);
+    }});
+    return false;
+}
+
+        $(document).ready(function(){
+            $('.mt4loginTypeRadio').change(function(){
+
+               $type= $('.mt4loginTypeRadio:checked').val();
+                if($type==0){$('#newLogin').attr('disabled','disabled');}else{$('#newLogin').removeAttr('disabled');}
+            });
+        });
+
+    
+    </script>
+
+</head>
+<body id="main_body" >
+	<img id="top" src="top.png" alt="">
+	<div id="form_container">
+		<h1>Sample MT4 WepApi Form</h1>
+		<form class="appnitro" id="mainForm" onsubmit="sendFormAjax($(this));return false;" action="form.php"  method="post" >
+            <div class="form_description">
+		<p>This form is For Demonstration purposes only. check cfg.php file to configure your MT4 server.</p>
+	    </div>						
+         
+            <ul>
+
+                <li >
+                    <div id="tabsContainer">
+                        <label for="mode_1" class="active">
+                            <input type="radio" id="mode_1" name="mode" value="1" onclick="changeTab($(this),'leverage');" checked="checked" />Leverage
+                        </label>
+                        <label for="mode_2">
+                            <input type="radio" id="mode_2" name="mode" value="2" onclick="changeTab($(this),'changepassword');"  />Change Password
+                        </label>
+                        <label for="mode_3">
+                            <input type="radio" id="mode_3" name="mode" value="3"  onclick="changeTab($(this),'payment');"  />Payment
+                        </label>
+                        <label for="mode_4">
+                            <input type="radio" id="mode_4" name="mode" value="4" onclick="changeTab($(this),'internal');"   />Internal Transfer
+                        </label>
+                       
+                        <label for="mode_6">
+                            <input type="radio" id="mode_6" name="mode" value="6" onclick="changeTab($(this),'createMt4Account');"  >Create Mt4 Account
+                        </label>
+                          <label for="mode_8">
+                            <input type="radio" id="mode_8" name="mode" value="8" onclick="changeTab($(this),'modifyMt4Account');"  >Modify Mt4 Account
+                        </label>
+                    </div>
+
+                </li>
+                <li>
+                    <ul id="loginInputsContainer">
+                        <li>
+                            <label class="description">Login </label>
+                            <div>
+                                <input name="login" class="element text medium" type="text" maxlength="255" value=""/>
+                            </div>
+                        </li>
+                        <li>
+                            <label class="description">Password</label><i>optional</i>
+                            <div>
+                                <input name="password" class="element text medium" type="password" maxlength="255" value=""/>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><br></li>
+
+
+                <div id="leverage" class="tab">
+                    <ul>
+                    <li>
+                        <label class="description">Leverage </label>
+                        <div>
+                            <select class="element select medium" name="leverage"> 
+                                <option value="100"  selected="selected">1:100</option>
+                                <option value="200" >1:200</option>
+                                <option value="500" >1:500</option>
+                            </select>
+                        </div> 
+                    </li>
+                    </ul>
+                </div>
+
+                <div id="changepassword" class="tab">
+                    <ul>
+                    <li>
+                        <label class="description">New Password</label>
+                        <div>
+                            <input name="newpassword" class="element text medium" type="password" maxlength="255" value=""/> 
+                        </div> 
+                    </li>
+                    <li>
+                        <input type="radio" name="passtype" value="0" checked="checked"/>Master
+                        <input type="radio" name="passtype" value="1" />Investor
+                    </li>
+                    </ul>
+                </div>
+                
+                  <div id="payment" class="tab">
+                      <ul>
+                    <li>
+                        <label class="description">Amount</label>
+                        <div>
+                            <input name="amount1" class="element text medium" type="text" maxlength="255" value=""/> 
+                        </div> 
+                    </li>
+                    <li>
+                        <input type="radio" name="paymenttype" value="0" checked="checked"/>Deposit
+                        <input type="radio" name="paymenttype" value="1" />Withdraw
+                        <input type="radio" name="paymenttype" value="2" />Credit In
+                        <input type="radio" name="paymenttype" value="3" />Credit Out
+                    </li>
+                      <li>
+                        <label class="description">Comment</label>
+                        <div>
+                            <input name="comment1" class="element text medium" type="text" maxlength="255" value=""/> 
+                        </div> 
+                    </li>
+                      </ul>
+                </div>
+                
+                <div id="internal" class="tab">
+                    <li> 
+                        <label class="description">Transfer To</label>
+                        <div>
+                            <input name="toaccount" class="element text medium" type="text" maxlength="255" value=""/> 
+                        </div> 
+                    </li>
+                     <li>
+                        <label class="description">Amount</label>
+                        <div>
+                            <input name="amount2" class="element text medium" type="text" maxlength="255" value=""/> 
+                        </div> 
+                    </li>
+                </div>
+
+                <div id="createMt4Account" class="tab">
+
+
+                    <li>
+
+                        <div id="loginTypeContainer">
+                            <label><input type="radio"  checked class="mt4loginTypeRadio" name="mt4loginTypeRadio" value="0"/>Auto generate </label>
+                            <label><input type="radio"  class="mt4loginTypeRadio" name="mt4loginTypeRadio" value="1"/>insert login</label>
+                            <input type="text" name="newLogin" id="newLogin"value="" placeholder="login" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label class="description">group</label>
+                        <div>
+                            <select name="group" class="element select medium" >
+                                <option value="1">Group1</option>
+                                <option value="2">Group2</option>
+                                <option value="3">Group3</option>
+                                </select>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">name</label>
+                        <div>
+                            <input name="name" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">password</label>
+                        <div>
+                            <input name="password1" class="element text medium" type="password" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">investor</label>
+                        <div>
+                            <input name="investor_password" class="element text medium" type="password" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">email</label>
+                        <div>
+                            <input name="email" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">country</label>
+                        <div>
+                            <select name="country" class="element select medium" >
+                                <option value="Jordan">Jordan</option>
+                                <option value="China">China</option>
+                                <option value="US">US</option>
+                            </select>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">state</label>
+                        <div>
+                            <input name="state" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">city</label>
+                        <div>
+                            <input name="city" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">address</label>
+                        <div>
+                            <input name="address" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">comment</label>
+                        <div>
+                            <input name="comment" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">phone</label>
+                        <div>
+                            <input name="phone" class="element text medium" type="tel" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">phone password</label>
+                        <div>
+                            <input name="phone_password" class="element text medium" type="password" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+
+                    <li>
+                        <label class="description">status</label>
+                        <div>
+                            <input name="status" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">zipcode</label>
+                        <div>
+                            <input name="zipcode" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <label class="description">leverage</label>
+                        <div>
+                            <select name="leverage2" class="element select medium" >
+                                <option value="50">1:50</option>
+                                <option value="100" selected>1:100</option>
+                                <option value="200">1:200</option>
+                                <option value="500">1:500</option>
+                            </select>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <label class="description">agent</label>
+                        <div>
+                            <input name="agent" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+
+                    <li>
+                        <label class="description">initial deposit for demo account</label>
+                        <div>
+                            <select name="initial_deposit" >
+                                <option value="1000">1000</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="1000000">1000000</option>
+                            </select>
+                        </div>
+                    </li>
+
+
+
+                    <li>
+                        <label class="description">National identification</label>
+                        <div>
+                            <input name="nationalNum" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <label class="description">&ensp;</label>
+                        <div>
+
+                            <label class="description"> <input name="send_reports" class="description"  type="checkbox"   value="1"/>send reports</label>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">&ensp;</label>
+                        <div>
+
+                            <label class="description"> <input name="read_only" class="description"  type="checkbox"   value="1"/>Read Only</label>
+
+                        </div>
+                    </li>
+
+
+
+                </div>
+
+
+
+
+                <div id="modifyMt4Account" class="tab">
+
+                    <li>
+                        <label class="description">email</label>
+                        <div>
+                            <input name="email4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">country</label>
+                        <div>
+                            <select name="country4" class="element select medium" >
+                                <option value="Jordan">Jordan</option>
+                                <option value="China">China</option>
+                                <option value="US">US</option>
+                            </select>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">state</label>
+                        <div>
+                            <input name="state4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">city</label>
+                        <div>
+                            <input name="city4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">address</label>
+                        <div>
+                            <input name="address4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                  
+                    <li>
+                        <label class="description">phone</label>
+                        <div>
+                            <input name="phone4" class="element text medium" type="tel" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">phone password</label>
+                        <div>
+                            <input name="phone_password4" class="element text medium" type="password" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+
+                    <li>
+                        <label class="description">status</label>
+                        <div>
+                            <input name="status4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">zipcode</label>
+                        <div>
+                            <input name="zipcode4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+                   
+                    <li>
+                        <label class="description">agent</label>
+                        <div>
+                            <input name="agent4" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <label class="description">National identification</label>
+                        <div>
+                            <input name="nationalNum" class="element text medium" type="text" maxlength="255" value=""/>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <label class="description">&ensp;</label>
+                        <div>
+
+                            <label class="description"> <input name="send_reports4" class="description"  type="checkbox"   value="1"/>send reports</label>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="description">&ensp;</label>
+                        <div>
+
+                            <label class="description"> <input name="read_only4" class="description"  type="checkbox"   value="1"/>Read Only</label>
+
+                        </div>
+                    </li>
+
+
+
+                </div>
+
+
+                <li class="buttons">
+		       <input id="saveForm"  type="submit" name="submit" value="Submit"  />
+                </li>
+			</ul>
+		</form>	
+        <center>
+        <h2 id="ajaxDump"></h2>
+            </center>
+	</div>
+	<img id="bottom" src="bottom.png" alt="">
+</body>
+</html>
